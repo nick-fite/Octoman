@@ -1,12 +1,14 @@
 using UnityEngine;
 using UnityEngine.EventSystems;
 
-public class TentacleButton : Widget, IDragHandler, IEndDragHandler
+public class TentacleButton : Widget, IDragHandler, IEndDragHandler, IBeginDragHandler
 {
     public delegate void OnTentacleMoveDelegate(Vector3 newPos);
     public delegate void OnTentacleEndMoveDelegate();
+    public delegate void OnTentacleStartMoveDelegate();
     public event OnTentacleMoveDelegate OnTentacleMove;
     public event OnTentacleEndMoveDelegate OnTentacleEndMove;
+    public event OnTentacleStartMoveDelegate OnTentacleStartMove;
 
 
     private RectTransform _rectTransform;
@@ -25,6 +27,11 @@ public class TentacleButton : Widget, IDragHandler, IEndDragHandler
     public void OnEndDrag(PointerEventData eventData)
     {
         OnTentacleEndMove?.Invoke();
+    }
+
+    public void OnBeginDrag(PointerEventData eventData)
+    {
+        OnTentacleStartMove?.Invoke();
     }
 
 }
