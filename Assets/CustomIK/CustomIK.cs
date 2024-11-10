@@ -31,7 +31,7 @@ public class CustomIK : MonoBehaviour
 
     private void Init()
     {
-        _bones = new Transform[chainLength - 1];
+        _bones = new Transform[chainLength + 1];
         _positions = new Vector3[chainLength + 1];
         _boneLength = new float[chainLength];
         _startDirectionSuccess = new Vector3[chainLength+1];
@@ -126,9 +126,9 @@ public class CustomIK : MonoBehaviour
                     }
                 }
 
-                for(int i = 1; i < _positions.Length; i++)
+                for(int i = 1; i < _positions.Length - 1; i++)
                 {
-                    _positions[i] = _positions[i+1] + (_positions[i] - _positions[i-1]).normalized * _boneLength[i-1];
+                    _positions[i] = _positions[i] + (_positions[i] - _positions[i-1]).normalized * _boneLength[i-1];
                 }
 
                 if ((_positions[_positions.Length -1] - targetPos).sqrMagnitude < delta * delta)
@@ -151,6 +151,9 @@ public class CustomIK : MonoBehaviour
 
         for(int i = 0; i < _positions.Length; i++)
         {
+            Debug.Log("last pos: " + _positions[20]);
+            Debug.Log("i: " + i);
+            Debug.Log("length: " + _bones.Length);
             if(i == _positions.Length - 1)
             {
                 Debug.Log("doin it");
@@ -158,7 +161,7 @@ public class CustomIK : MonoBehaviour
             }
             else
             {
-                Debug.Log("position 1: "+ _positions[i] + "\n position 2:"+ _positions[i+1] + " \n i: " + i + "\n bones: "+ _bones[i].ToString() + "\n startDirSucc: " + _startDirectionSuccess[i].ToString());
+                //Debug.Log("position 1: "+ _positions[i] + "\n position 2:"+ _positions[i+1] + "\n bones: "+ _bones[i].ToString() + "\n startDirSucc: " + _startDirectionSuccess[i].ToString());
                 SetRotationRootSpace(_bones[i], Quaternion.FromToRotation(_startDirectionSuccess[i], _positions[i + 1] - _positions[i]) * Quaternion.Inverse(_startRotationBone[i]));
             }
             SetPositionRootSpace(_bones[i], _positions[i]);
