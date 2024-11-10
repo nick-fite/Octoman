@@ -212,6 +212,9 @@ PrefabInstance:
     - {fileID: 65702495048144492, guid: bcb4aa04a0443be4ca020e0f56f87b20, type: 3}
     m_AddedGameObjects: []
     m_AddedComponents:
+    - targetCorrespondingSourceObject: {fileID: 6905609870639353253, guid: bcb4aa04a0443be4ca020e0f56f87b20, type: 3}
+      insertIndex: -1
+      addedObject: {fileID: 1132779608}
     - targetCorrespondingSourceObject: {fileID: 598541840542201743, guid: bcb4aa04a0443be4ca020e0f56f87b20, type: 3}
       insertIndex: -1
       addedObject: {fileID: 65305048}
@@ -233,12 +236,12 @@ MonoBehaviour:
   m_Script: {fileID: 11500000, guid: 261d61d3bbf674140b681f46b1c6a448, type: 3}
   m_Name: 
   m_EditorClassIdentifier: 
-  chainLength: 20
+  chainLength: 21
   target: {fileID: 763478927}
   pole: {fileID: 0}
-  iterations: 10
+  iterations: 21
   delta: 0.001
-  snapbackStrength: 1
+  snapbackStrength: 0.7
 --- !u!1001 &354354382
 PrefabInstance:
   m_ObjectHideFlags: 0
@@ -507,6 +510,34 @@ Transform:
   m_CorrespondingSourceObject: {fileID: 8892503890480038082, guid: c77e8d71f7a2aaf49b7f924a01e57ff9, type: 3}
   m_PrefabInstance: {fileID: 763478926}
   m_PrefabAsset: {fileID: 0}
+--- !u!1 &1132779606 stripped
+GameObject:
+  m_CorrespondingSourceObject: {fileID: 6905609870639353253, guid: bcb4aa04a0443be4ca020e0f56f87b20, type: 3}
+  m_PrefabInstance: {fileID: 65305046}
+  m_PrefabAsset: {fileID: 0}
+--- !u!4 &1132779607 stripped
+Transform:
+  m_CorrespondingSourceObject: {fileID: -2639638324218457063, guid: bcb4aa04a0443be4ca020e0f56f87b20, type: 3}
+  m_PrefabInstance: {fileID: 65305046}
+  m_PrefabAsset: {fileID: 0}
+--- !u!114 &1132779608
+MonoBehaviour:
+  m_ObjectHideFlags: 0
+  m_CorrespondingSourceObject: {fileID: 0}
+  m_PrefabInstance: {fileID: 0}
+  m_PrefabAsset: {fileID: 0}
+  m_GameObject: {fileID: 1132779606}
+  m_Enabled: 1
+  m_EditorHideFlags: 0
+  m_Script: {fileID: 11500000, guid: 4a8b49681b8db0d479593227c7e88b7a, type: 3}
+  m_Name: 
+  m_EditorClassIdentifier: 
+  _mask:
+    serializedVersion: 2
+    m_Bits: 0
+  _rb: {fileID: 0}
+  _widgetPrefab: {fileID: 55910327178013837, guid: a81f88822f5c3e847be1421953496fd1, type: 3}
+  _attachTransform: {fileID: 1132779607}
 --- !u!1 &1173329938
 GameObject:
   m_ObjectHideFlags: 0

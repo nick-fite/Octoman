@@ -97,7 +97,7 @@ public class CustomIK : MonoBehaviour
         quaternion targetRot = GetRotationRootSpace(target);
 
         //if it's possible to reach
-        if((targetPos - GetPositionRootSpace(_bones[0])).sqrMagnitude >= _completeLength * _completeLength)
+        /*if((targetPos - GetPositionRootSpace(_bones[0])).sqrMagnitude >= _completeLength * _completeLength)
         {
             Vector3 dir = (targetPos - _positions[0]).normalized;
 
@@ -107,7 +107,7 @@ public class CustomIK : MonoBehaviour
             }
         }
         else
-        {
+        {*/
             for(int i = 0; i < _positions.Length -1; i++)
             {
                 _positions[i + 1] = Vector3.Lerp(_positions[i + 1], _positions[i] + _startDirectionSuccess[i], snapbackStrength);
@@ -130,11 +130,11 @@ public class CustomIK : MonoBehaviour
                 {
                     _positions[i] = _positions[i] + (_positions[i] - _positions[i-1]).normalized * _boneLength[i-1];
                 }
-
+                
                 if ((_positions[_positions.Length -1] - targetPos).sqrMagnitude < delta * delta)
                     break;
             }
-        }
+        
 
         if (pole != null)
         {
