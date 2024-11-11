@@ -126,10 +126,10 @@ public class CustomIK : MonoBehaviour
                     }
                 }
 
-                for(int i = 1; i < _positions.Length - 1; i++)
-                {
-                    _positions[i] = _positions[i] + (_positions[i] - _positions[i-1]).normalized * _boneLength[i-1];
-                }
+                //for(int i = 1; i < _positions.Length - 1; i++)
+                //{
+                //    _positions[i] = _positions[i] + (_positions[i] - _positions[i-1]).normalized * _boneLength[i-1];
+                //}
 
                 if ((_positions[_positions.Length -1] - targetPos).sqrMagnitude < delta * delta)
                     break;
