@@ -1,6 +1,7 @@
 using Unity.Mathematics;
 using UnityEditor;
 using UnityEngine;
+using UnityEngine.Animations.Rigging;
 
 public class CustomIK : MonoBehaviour
 {
@@ -97,18 +98,18 @@ public class CustomIK : MonoBehaviour
         quaternion targetRot = GetRotationRootSpace(target);
 
         //if it's possible to reach
-        /*if((targetPos - GetPositionRootSpace(_bones[0])).sqrMagnitude >= _completeLength * _completeLength)
+/*        if((targetPos - GetPositionRootSpace(_bones[0])).sqrMagnitude > _completeLength * _completeLength)
         {
             Vector3 dir = (targetPos - _positions[0]).normalized;
 
             for(int i = 1; i < _positions.Length; i++)
             {
-                _positions[i] = _positions[i -1] + dir * _boneLength[i-1];
+                _positions[i] = _positions[i-1] + dir * _boneLength[i-1];
             }
         }
         else
         {*/
-            for(int i = 0; i < _positions.Length -1; i++)
+            /*for(int i = 0; i < _positions.Length -1; i++)
             {
                 _positions[i + 1] = Vector3.Lerp(_positions[i + 1], _positions[i] + _startDirectionSuccess[i], snapbackStrength);
             }
@@ -133,8 +134,32 @@ public class CustomIK : MonoBehaviour
 
                 if ((_positions[_positions.Length -1] - targetPos).sqrMagnitude < delta * delta)
                     break;
-            }
+            }*/
         //}
+
+        int tipIndex = _positions.Length -1;
+
+        float sqrTolerance = delta * delta;
+        if((targetPos - _positions[tipIndex]).sqrMagnitude > sqrTolerance)
+        {
+            //Vector3 pos0 = _positions[0];
+            int iteration = 0;
+            while((targetPos - _positions[tipIndex]).sqrMagnitude > sqrTolerance && ++iteration < iterations)
+            {
+                _positions[tipIndex] = target.position;
+                for(int i = tipIndex - 1; i > -1; i--)
+                {
+                    _positions[i] = _positions[i + 1] + ((_positions[i] - _positions[i + 1]).normalized * _boneLength[i]);
+                }
+
+                //_positions[0] = pos0;
+                for(int i = 1; i < _positions.Length; i++)
+                {
+                    _positions[i] = _positions[i - 1] + ((_positions[i] - _positions[i-1]).normalized * _boneLength[i-1]);
+                }
+            }
+        }
+
 
         if (pole != null)
         {
@@ -153,14 +178,21 @@ public class CustomIK : MonoBehaviour
         {
             if(i == _positions.Length - 1)
             {
-                SetRotationRootSpace(_bones[i],  Quaternion.Inverse(targetRot) * _startRotationTarget * Quaternion.Inverse(_startRotationBone[i]));
+                _bones[i].rotation = Quaternion.Inverse(targetRot) * _startRotationTarget * Quaternion.Inverse(_startRotationBone[i]);
+                //SetRotationRootSpace(_bones[i],  Quaternion.Inverse(targetRot) * _startRotationTarget * Quaternion.Inverse(_startRotationBone[i]));
             }
             else
             {
-                SetRotationRootSpace(_bones[i], Quaternion.FromToRotation(_startDirectionSuccess[i], _positions[i + 1] - _positions[i]) * Quaternion.Inverse(_startRotationBone[i]));
+                Vector3 prevDir = _bones[i + 1].position - _bones[i].position;
+                Vector3 newDir = _positions[i + 1] - _positions[i];
+                Quaternion rot = _bones[i].rotation;
+                _bones[i].rotation = Quaternion.Lerp(rot, QuaternionExt.FromToRotation(prevDir, newDir) * rot, Time.deltaTime);
+                //SetRotationRootSpace(_bones[i], Quaternion.Lerp(rot, QuaternionExt.FromToRotation(prevDir, newDir) * rot, Time.deltaTime));
             }
-            SetPositionRootSpace(_bones[i], _positions[i]);
+            //SetPositionRootSpace(_bones[i], _positions[i]);
+            _bones[i].position = _positions[i];
         }
+        
     }
 
     private void SetPositionRootSpace(Transform current, Vector3 position)
