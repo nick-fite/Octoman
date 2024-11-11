@@ -134,7 +134,7 @@ public class CustomIK : MonoBehaviour
                 if ((_positions[_positions.Length -1] - targetPos).sqrMagnitude < delta * delta)
                     break;
             }
-        
+        //}
 
         if (pole != null)
         {
@@ -153,12 +153,10 @@ public class CustomIK : MonoBehaviour
         {
             if(i == _positions.Length - 1)
             {
-                Debug.Log("doin it");
                 SetRotationRootSpace(_bones[i],  Quaternion.Inverse(targetRot) * _startRotationTarget * Quaternion.Inverse(_startRotationBone[i]));
             }
             else
             {
-                Debug.Log("position 1: "+ _positions[i] + "\n position 2:"+ _positions[i+1] + " \n i: " + i + "\n bones: "+ _bones[i].ToString() + "\n startDirSucc: " + _startDirectionSuccess[i].ToString());
                 SetRotationRootSpace(_bones[i], Quaternion.FromToRotation(_startDirectionSuccess[i], _positions[i + 1] - _positions[i]) * Quaternion.Inverse(_startRotationBone[i]));
             }
             SetPositionRootSpace(_bones[i], _positions[i]);

@@ -28,19 +28,32 @@ public class Draggable : MonoBehaviour
 
     private void MoveTentacle(Vector3 newPos)
     {
-        _rb.isKinematic = true;
+        _rb.useGravity = false;
         Vector3 posToWorld = Camera.main.ScreenToWorldPoint(newPos);
         transform.position = posToWorld;
     }
 
     private void EndMove()
     {
-        _rb.isKinematic = false;
+        if(_widget.isFrozen)
+        {
+            return;
+        }
+        _rb.useGravity = true;
     }
 
     // Update is called once per frame
     void Update()
     {
+        if(!_rb.useGravity && !_widget.isFrozen)
+        {
+            if(Input.GetMouseButtonDown(1))
+            {
+                _widget.isFrozen = true;
+            }
+            transform.Translate(Vector3.up * Input.GetAxis("Mouse ScrollWheel"));
+        }
+
         if(_widget)
         {
             _widget.transform.position = Camera.main.WorldToScreenPoint(_attachTransform.position);
